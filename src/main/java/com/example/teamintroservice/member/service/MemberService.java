@@ -1,5 +1,6 @@
 package com.example.teamintroservice.member.service;
 
+import com.example.teamintroservice.common.exception.MemberNotFoundException;
 import com.example.teamintroservice.member.dto.MemberRequest;
 import com.example.teamintroservice.member.dto.MemberResponse;
 import com.example.teamintroservice.member.entity.Member;
@@ -26,7 +27,7 @@ public class MemberService {
 
     public MemberResponse getOneMember(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new IllegalStateException("[API - Log] error : 없는 팀원입니다.")
+                () -> new MemberNotFoundException("없는 팀원입니다.")
         );
         log.info("[API - Log] 멤버 정보 조회");
         return new MemberResponse(member);
