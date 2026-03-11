@@ -18,14 +18,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class S3Service {
 
-    private static final Duration PRESIGNED_URL_EXPIRATION = Duration.ofDays(7);
-
     private final S3Template s3Template;
-
     private final MemberRepository memberRepository;
 
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
+
+    @Value("${cloudfront-domain}")
+    private String cloudFrontDomain;
 
     public String upload(Long memberId, MultipartFile file) {
         findMember(memberId);
@@ -38,9 +38,9 @@ public class S3Service {
         }
     }
 
-    public URL getDownloadUrl(Long memberId, String key) {
+    public String getDownloadUrl(Long memberId, String key) {
         findMember(memberId);
-        return s3Template.createSignedGetURL(bucket, key, PRESIGNED_URL_EXPIRATION);
+        return cloudFrontDomain + "/" + key;
     }
 
     public void findMember(Long memberId) {

@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.URL;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/members/{memberId}/profile-image")
@@ -34,8 +32,8 @@ public class FileController {
             @PathVariable Long memberId,
             @RequestParam String key
     ) {
-        URL url = s3Service.getDownloadUrl(memberId, key);
+        String url = s3Service.getDownloadUrl(memberId, key);
         return ResponseEntity
-                .ok(ApiResponseDto.success(HttpStatus.OK, new FileDownloadUrlResponse(url.toString())));
+                .ok(ApiResponseDto.success(HttpStatus.OK, new FileDownloadUrlResponse(url)));
     }
 }

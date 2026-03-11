@@ -17,8 +17,8 @@ spring:
       max-file-size: 10MB
   cloud:
     aws:
-      s3:
-        bucket: profile-seok447445-files
+      cloudfront:
+        domain: ${cloudfront-domain}
 
 management:
   endpoint:
