@@ -3,7 +3,7 @@ spring:
     import:
       - "optional:aws-parameterstore:/team-intro/"
   datasource:
-    url: ${url}
+    url: ${database_url}
     username: ${username}
     password: ${password}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -20,7 +20,7 @@ spring:
       s3:
         bucket: profile-seok447445-files
       cloudfront:
-        domain: ${cloudfront-domain}
+        domain: ${cloudfront_domain}
 
 management:
   endpoint:
@@ -28,4 +28,4 @@ management:
       show-details: never
 
 info:
-  team-name: ${team-name}
+  team-name: ${team_name}
