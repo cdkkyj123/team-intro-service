@@ -36,7 +36,11 @@ jobs:
 
       # Step 4: 테스트 실행
       - name: Run tests
-        run: ./gradlew test --info
+        env:
+          AWS_REGION: ap-northeast-2
+          AWS_ACCESS_KEY_ID: dummy
+          AWS_SECRET_ACCESS_KEY: dummy
+        run: ./gradlew test
 
       # Step 5: JAR 빌드
       - name: Build JAR
