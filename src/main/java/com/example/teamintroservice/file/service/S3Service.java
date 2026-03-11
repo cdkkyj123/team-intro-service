@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URL;
-import java.time.Duration;
 import java.util.UUID;
 
 @Service
@@ -24,7 +22,7 @@ public class S3Service {
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
 
-    @Value("${cloudfront-domain}")
+    @Value("${cloudfront_domain}")
     private String cloudFrontDomain;
 
     public String upload(Long memberId, MultipartFile file) {
