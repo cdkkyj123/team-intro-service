@@ -7,7 +7,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest(properties = {
         "spring.config.import=optional:aws-parameterstore:",
-        "cloudfront-domain=https://dummy.cloudfront.net"
+        "cloudfront_domain=https://dummy.cloudfront.net"
 })
 class TeamIntroServiceApplicationTests {
 
