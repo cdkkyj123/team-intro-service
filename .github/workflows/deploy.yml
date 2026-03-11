@@ -88,11 +88,12 @@ jobs:
       - name: Build and push Docker image
         run: |
           SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/team-intro-service:$SHORT_SHA .
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/team-intro-service:latest .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/team-intro-service:$SHORT_SHA
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/team-intro-service:latest
-          echo "Pushed: ${{ secrets.DOCKERHUB_USERNAME }}/team-intro-service:$SHORT_SHA"
+          docker buildx create --use
+          docker buildx build --platform linux/arm64 \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/team-intro-service:$SHORT_SHA \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/team-intro-service:latest \
+            --push .
+          echo "✅ Pushed: ${{ secrets.DOCKERHUB_USERNAME }}/team-intro-service:$SHORT_SHA"
 
       # Step 5: EC2 배포
       - name: Deploy to EC2
