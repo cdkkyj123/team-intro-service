@@ -28,3 +28,6 @@ http://43.200.245.162:8080/actuator/info
 - HTTPS 적용된 도메인 URL : https://team-intro-service.click
 - Target Group(대상 그룹) 이미지
 ![img_5.png](img_5.png)
+
+## Lv6
+- CloudFront 이미지 URL : https://d36p9anv6f6vud.cloudfront.net/uploads/3241525c-fb40-4686-8717-0c8ad73975a9_KakaoTalk_20230703_135556461_03.jpg
