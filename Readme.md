@@ -19,4 +19,7 @@ http://43.200.245.162:8080/actuator/info
 - 만료시간 : 2026.03.11 오전 2시 35분의 7일 뒤인 2026.03.18 오전 2시 35분
 
 ## Lv4
--
+- Github Actions 성공 이미지
+![img_3.png](img_3.png)
+- EC2 터미널 이미지
+![img_4.png](img_4.png)
