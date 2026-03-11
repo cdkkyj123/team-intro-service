@@ -22,7 +22,7 @@ public class S3Service {
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
 
-    @Value("${cloudfront_domain}")
+    @Value("${spring.cloud.aws.cloudfront.domain}")
     private String cloudFrontDomain;
 
     public String upload(Long memberId, MultipartFile file) {
