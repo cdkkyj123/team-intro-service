@@ -23,3 +23,8 @@ http://43.200.245.162:8080/actuator/info
 ![img_3.png](img_3.png)
 - EC2 터미널 이미지
 ![img_4.png](img_4.png)
+
+## Lv5
+- HTTPS 적용된 도메인 URL : https://team-intro-service.click
+- Target Group(대상 그룹) 이미지
+![img_5.png](img_5.png)
