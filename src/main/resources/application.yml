@@ -2,7 +2,7 @@ spring:
   application:
     name: team-intro-service
   profiles:
-    active: local
+    active: prod
 
 server:
   port: 8080
