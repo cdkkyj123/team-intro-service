@@ -52,47 +52,39 @@ jobs:
       - name: Build JAR
         run: ./gradlew bootJar
 
+      # Step 6: JAR artifact로 저장
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-jar
+          path: build/libs/*.jar
+
   # CD - Docker Hub Push & EC2 배포
   cd:
     runs-on: ubuntu-latest
-    needs: ci  # CI job 성공 시에만 실행
-    if: github.event_name == 'push'  # PR은 배포 안 함
+    needs: ci
+    if: github.event_name == 'push'
 
     steps:
-      # Step 1: 코드 가져오기
+      # Step 1: 코드 가져오기 (Dockerfile 때문에 필요)
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Java 17 설치
-      - name: Setup Java 17
-        uses: actions/setup-java@v4
+      # Step 2: CI에서 빌드한 JAR 가져오기
+      - name: Download JAR
+        uses: actions/download-artifact@v4
         with:
-          java-version: '17'
-          distribution: 'corretto'
+          name: app-jar
+          path: build/libs/
 
-      # Step 3: Gradle 캐시
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      # Step 4: JAR 빌드
-      - name: Build JAR
-        run: ./gradlew bootJar
-
-      # Step 5: Docker Hub 로그인
+      # Step 3: Docker Hub 로그인
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Step 6: Docker 이미지 빌드 & Push
+      # Step 4: Docker 이미지 빌드 & Push
       - name: Build and push Docker image
         run: |
           SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
@@ -102,7 +94,7 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/team-intro-service:latest
           echo "Pushed: ${{ secrets.DOCKERHUB_USERNAME }}/team-intro-service:$SHORT_SHA"
 
-      # Step 7: EC2 배포
+      # Step 5: EC2 배포
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1
         with:
