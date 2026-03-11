@@ -1,0 +1,29 @@
+spring:
+  config:
+    import:
+      - "optional:aws-parameterstore:/team-intro/"
+  datasource:
+    url: ${url}
+    username: ${username}
+    password: ${password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    database-platform: org.hibernate.dialect.MySQLDialect
+  servlet:
+    multipart:
+      max-file-size: 10MB
+  cloud:
+    aws:
+      s3:
+        bucket: profile-seok447445-files
+
+management:
+  endpoint:
+    health:
+      show-details: never
+
+info:
+  team-name: ${team-name}
