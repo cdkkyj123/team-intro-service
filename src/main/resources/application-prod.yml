@@ -19,6 +19,8 @@ spring:
     aws:
       cloudfront:
         domain: ${cloudfront-domain}
+      s3:
+        bucket: profile-seok447445-files
 
 management:
   endpoint:
