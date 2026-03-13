@@ -20,7 +20,7 @@ public class MemberService {
 
     @Transactional
     public MemberResponse saveMember(MemberRequest request) {
-        Member member = new Member(request.getName(), request.getAge(), request.getMbti());
+        Member member = new Member(request.getName(), request.getAge(), request.getMbti(), null);
         log.info("[API - Log] 멤버 정보 저장");
         return new MemberResponse(memberRepository.save(member));
     }
@@ -29,7 +29,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException("없는 팀원입니다.")
         );
-        log.info("[API - Log] 멤버 정보 조회");
+        log.info("[API - Log] 멤버 정보 조회 - memberId: {}", memberId);
         return new MemberResponse(member);
     }
 }

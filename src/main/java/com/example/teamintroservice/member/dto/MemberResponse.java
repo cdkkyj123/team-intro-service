@@ -8,7 +8,7 @@ public class MemberResponse {
 
     private final Long id;
     private final String name;
-    private final Long age;
+    private final int age;
     private final String mbti;
 
     public MemberResponse(Member member) {

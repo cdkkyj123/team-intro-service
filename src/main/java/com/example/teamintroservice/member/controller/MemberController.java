@@ -4,6 +4,7 @@ import com.example.teamintroservice.common.dto.ApiResponseDto;
 import com.example.teamintroservice.member.dto.MemberRequest;
 import com.example.teamintroservice.member.dto.MemberResponse;
 import com.example.teamintroservice.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,19 +20,19 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping
-    ResponseEntity<ApiResponseDto<MemberResponse>> saveMember(
-            @RequestBody MemberRequest request
+    public ResponseEntity<ApiResponseDto<MemberResponse>> saveMember(
+            @Valid @RequestBody MemberRequest request
     ) {
         log.info("[API - Log] 멤버 정보 저장 시도");
-        return ResponseEntity
-                .ok(ApiResponseDto.success(HttpStatus.CREATED, memberService.saveMember(request)));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponseDto.success(HttpStatus.CREATED, memberService.saveMember(request)));
     }
 
     @GetMapping("/{memberId}")
-    ResponseEntity<ApiResponseDto<MemberResponse>> getOneMember(
+    public ResponseEntity<ApiResponseDto<MemberResponse>> getOneMember(
             @PathVariable Long memberId
     ) {
-        log.info("[API - Log] 멤버 정보 조회 시도");
+        log.info("[API - Log] 멤버 정보 조회 시도 - memberId: {}", memberId);
         return ResponseEntity.ok(ApiResponseDto.success(HttpStatus.OK, memberService.getOneMember(memberId)));
     }
 }

@@ -16,13 +16,18 @@ public class Member {
     private Long id;
 
     private String name;
-    private Long age;
+    private int age;
     private String mbti;
+    private String profileImageUrl;
 
-    public Member(String name, Long age, String mbti) {
+    public Member(String name, int age, String mbti, String profileImageUrl) {
         this.name = name;
         this.age = age;
         this.mbti = mbti;
+        this.profileImageUrl = profileImageUrl;
     }
 
+    public void update(String url) {
+        this.profileImageUrl = url;
+    }
 }
