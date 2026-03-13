@@ -105,13 +105,34 @@ jobs:
 
       - name: Deploy to EC2 via SSM
         run: |
-          aws ssm send-command \
-            --instance-ids ${{ secrets.EC2_INSTANCE_ID }} \
-            --document-name "AWS-RunShellScript" \
-            --parameters 'commands=[
-              "docker pull sokb4/team-intro-service:latest",
-              "docker stop app || true",
-              "docker rm app || true",
-              "docker run -d --name app -p 8080:8080 --restart unless-stopped -e AWS_REGION=ap-northeast-2 sokb4/team-intro-service:latest --spring.profiles.active=prod"
-            ]' \
-            --region ap-northeast-2
+          INSTANCE_IDS=$(aws autoscaling describe-auto-scaling-groups \
+            --auto-scaling-group-names practice-asg \
+            --query "AutoScalingGroups[0].Instances[?LifecycleState=='InService'].InstanceId" \
+            --output text \
+            --region ap-northeast-2)
+
+          echo "현재 활성 인스턴스: $INSTANCE_IDS"
+
+          for INSTANCE_ID in $INSTANCE_IDS; do
+            COMMAND_ID=$(aws ssm send-command \
+              --instance-ids $INSTANCE_ID \
+              --document-name "AWS-RunShellScript" \
+              --parameters 'commands=[
+                "docker pull sokb4/team-intro-service:latest",
+                "docker stop app || true",
+                "docker rm app || true",
+                "docker run -d --name app -p 8080:8080 --restart unless-stopped -e AWS_REGION=ap-northeast-2 sokb4/team-intro-service:latest --spring.profiles.active=prod"
+              ]' \
+              --region ap-northeast-2 \
+              --query "Command.CommandId" \
+              --output text)
+
+            echo "Instance $INSTANCE_ID - Command ID: $COMMAND_ID"
+
+            aws ssm wait command-executed \
+              --command-id $COMMAND_ID \
+              --instance-id $INSTANCE_ID \
+              --region ap-northeast-2
+          done
+
+          echo "✅ 전체 인스턴스 배포 완료!"
